@@ -1,15 +1,16 @@
 from nonebot import on_command, CommandSession
+from nonebot.permission import GROUP_MEMBER
 from .get_price import get_price
 
 
-@on_command('jita', aliases='价格')
-async def weather(session: CommandSession):
+@on_command('jita', permission=GROUP_MEMBER, only_to_me=False, aliases='价格')
+async def market(session: CommandSession):
     item = session.get('item', prompt='请输入物品')
     price = await get_price(item)
     await session.send(price)
 
 
-@weather.args_parser
+@market.args_parser
 async def _(session: CommandSession):
     stripped_arg = session.current_arg_text.strip()  # 去掉消息首尾的空白符
 
