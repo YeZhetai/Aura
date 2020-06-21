@@ -4,13 +4,13 @@ from urllib.request import Request, urlopen
 import os
 
 
-def get_json(url):
+async def get_json(url):
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) like Gecko'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) like Gecko'  # 伪装浏览器
     }
     request = Request(url, headers=headers)
     html = urlopen(request)
-    rq_data = json.loads(html.read())
+    rq_data = json.loads(html.read())  # 这里取到的是一个包含字典的列表，我也不知道为啥，以后再说
     return rq_data[0]
 
 
@@ -22,9 +22,11 @@ async def get_price(item: str) -> str:
 
     item_id = data[item]
     api_url = 'https://api.evemarketer.com/ec/marketstat/json?usesystem=30000142&typeid='+str(item_id)
+    # evemarketer的API地址
     print(api_url)
-    data = get_json(api_url)
+    data = await get_json(api_url)
     sell_data = data['sell']
-    price = sell_data['min']
+    price = "{:,}".format(sell_data['min'])
 
-    return f'{item}的id是{item_id},吉他最低售价是{price}'
+    return f'欧服物价：\n{item}\n\n吉他最低售价 {price}\n\n价格来自EVEMARKETER'
+

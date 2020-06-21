@@ -1,12 +1,12 @@
 from nonebot import on_command, CommandSession
 from nonebot.permission import GROUP_MEMBER
-from .get_price import get_price
+from Aura.plugins.other import get_line
 
 
-@on_command('jita', permission=GROUP_MEMBER, only_to_me=False, aliases='价格')
+@on_command('花价', permission=GROUP_MEMBER, only_to_me=False, aliases='价格')
 async def market(session: CommandSession):
-    item = session.get('item', prompt='请输入物品')
-    price = await get_price(item)
+    item = session.get('item', prompt='请输入花的种类')
+    price = await get_line(item)
     await session.send(price)
 
 
@@ -20,6 +20,6 @@ async def _(session: CommandSession):
         return
 
     if not stripped_arg:
-        session.pause('物品名称不能为空，请重新输入')
+        session.pause('花的种类不能为空，请重新输入')
 
     session.state[session.current_key] = stripped_arg
