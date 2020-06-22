@@ -1,7 +1,6 @@
 import yaml
 import json
 from urllib.request import Request, urlopen
-import os
 
 
 async def get_json(url):

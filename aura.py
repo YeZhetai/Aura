@@ -6,6 +6,6 @@ from os import path
 if __name__ == '__main__':
     nonebot.init(config)
     nonebot.load_plugins(
-        path.join(path.dirname(__file__), 'Aura', 'plugins'), 'Aura.plugins'
+        path.join(path.dirname(path.abspath(__file__)), 'Aura', 'plugins'), 'Aura.plugins'
     )
     nonebot.run()
