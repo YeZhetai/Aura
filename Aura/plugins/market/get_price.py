@@ -41,6 +41,8 @@ async def get_price(url: str) -> str:
     print(api_url)
     data = await get_json(api_url)
     sell_data = data['sell']
-    price = "{:,}".format(sell_data['min'])
+    buy_data = data['buy']
+    sell_min = "{:,}".format(sell_data['min'])
+    buy_max = "{:,}".format(buy_data['max'])
 
-    return f'欧服物价：\n{item}\n\n吉他最低售价 {price}\n\n价格来自EVEMARKETER'
+    return f'{item}\n----------\n欧服物价：\n吉他最低售价 {sell_min}\n吉他最高收价 {buy_max}\n价格来自EVEMARKETER'
