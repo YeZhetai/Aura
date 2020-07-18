@@ -45,11 +45,13 @@ async def get_price(url: str) -> str:
         for key in data:
             item_list.append(key)
     if url not in data:
-        return '查询到以下物品：\n.isk '+'\n.isk '.join(await match_item(url, item_list))
+        suggestion = await match_item(url, item_list)
+
+        return '查询到以下物品：\n.isk '+'\n.isk '.join(suggestion)
 
     item = url
     item_id = data[item]
-    of_api_url = 'https://api.evemarketer.com/ec/marketstat/json?usesystem=30000142&typeid=' + str(item_id)
+    of_api_url = 'https://market.fuzzwork.co.uk/aggregates/?system=30000142&types=' + str(item_id)
     # evemarketer的API地址
     print(of_api_url)
     gf_api_url = 'https://www.ceve-market.org/api/market/region/10000002/system/30000142/type/'+str(item_id)+'.json'
