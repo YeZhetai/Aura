@@ -11,11 +11,7 @@ async def get_json(url):
     request = Request(url, headers=headers)
     html = urlopen(request)
     rq_data = json.loads(html.read())  # 这里取到的是一个包含字典的列表，我也不知道为啥，以后再说
-    if type(rq_data) is list:
-        api_data = rq_data[0]
-    else:
-        api_data = rq_data
-    return api_data
+    return rq_data
 
 
 async def match_item(user_input, item_list):
@@ -29,12 +25,11 @@ async def match_item(user_input, item_list):
     return [x for _, _, x in sorted(suggestions)]
 
 
-async def data_process(api_url):
-    data = await get_json(api_url)
+async def data_process(data):
     sell_data = data['sell']
     buy_data = data['buy']
-    sell_min = "{:,.2f}".format(sell_data['min'])
-    buy_max = "{:,.2f}".format(buy_data['max'])
+    sell_min = "{:,.2f}".format(float(sell_data['min']))
+    buy_max = "{:,.2f}".format(float(buy_data['max']))
     return f"吉他最低售价 {sell_min}\n吉他最高收价 {buy_max}"
 
 
@@ -57,7 +52,11 @@ async def get_price(url: str) -> str:
     gf_api_url = 'https://www.ceve-market.org/api/market/region/10000002/system/30000142/type/'+str(item_id)+'.json'
     #
     print(gf_api_url)
-    of_price = await data_process(of_api_url)
-    gf_price = await data_process(gf_api_url)
+    of_api = await get_json(of_api_url)
+    gf_api = await get_json(gf_api_url)
+    of_data = of_api[str(item_id)]
+    gf_data = gf_api
+    of_price = await data_process(of_data)
+    gf_price = await data_process(gf_data)
 
     return f'{item}\n----------\n国服物价：\n{gf_price}\n----------\n欧服物价：\n{of_price}'
