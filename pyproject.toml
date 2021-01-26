@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "Aura"
+version = "0.1.0"
+description = "An EVE assistance Robot"
+authors = []
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+nonebot2 = "^2.0.0.a8"
+nb-cli = "^0.1.0"
+yaml = "^5.4.1"
+request = "2.25.1"
+
+[tool.poetry.dev-dependencies]
+nonebot-test = "^0.1.0"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
