@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "Aura"
+version = "0.1.0"
+description = "Aura"
+authors = []
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8.0"
+nonebot2 = "^2.0.0-beta.1"
+pyunit-time = "^2021.2.2"
+Pillow = "^9.1.0"
+beautifulsoup4 = "^4.11.1"
+playwright = "^1.24.0"
+aiofiles = "^0.8.0"
+Markdown = "^3.4.1"
+
+[tool.poetry.dev-dependencies]
+nb-cli = "^0.6.0"
+
+[tool.nonebot]
+plugins = ["nonebot_plugin_rauthman", "nonebot_plugin_what2eat", "nonebot_plugin_apscheduler", "nonebot_plugin_htmlrender"]
+plugin_dirs = ["src/plugins"]
+
+[build-system]
+requires = ["poetry_core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
