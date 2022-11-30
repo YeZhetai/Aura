@@ -1,8 +1,14 @@
-from multiprocessing.connection import Client
 import yaml
 import httpx
 import re
+import sqlite3
 from nonebot.log import logger
+from tortoise import Tortoise
+from src.plugins.databasemanager.market_data import MarketData
+
+
+#async def match_commend():
+
 
 
 async def match_item(name, item_list):
@@ -25,7 +31,10 @@ async def suggestion(name):
             item_list.append(key)
         suggestion = await match_item(name, item_list)
 
-        return '查询到以下物品：\n.isk '+'\n.isk '.join(suggestion)
+        if len(suggestion) == 0:
+            return "无法找到物品，请确认物品名称"
+        else:
+            return '查询到以下物品：\n.isk '+'\n.isk '.join(suggestion)
 
 
 async def get_json(url):
@@ -56,19 +65,38 @@ async def data_process(url):
     return f"吉他最低售价 {sell_min}\n吉他最高收价 {buy_max}"
 
 
-async def check(item_id):
-    of_api_url = 'https://www.ceve-market.org/tqapi/market/region/10000002/system/30000142/type/'+str(item_id)+'.json'
-    # evemarketer的API地址
-    logger.info("check api "+ of_api_url)
-    of_price = await data_process(of_api_url)
-    gf_api_url = 'https://www.ceve-market.org/api/market/region/10000002/system/30000142/type/'+str(item_id)+'.json'
+async def check_sn(item_id):
+    sn_api_url = 'https://www.ceve-market.org/api/market/region/10000002/system/30000142/type/'+str(item_id)+'.json'
     #
-    logger.info("check api "+ gf_api_url)
-    gf_price = await data_process(gf_api_url)
+    logger.info("check api "+ sn_api_url)
+    sn_price = await data_process(sn_api_url)
 
-    return f'\n----------\n国服物价：\n{gf_price}\n----------\n欧服物价：\n{of_price}'
+    return f'\n----------\n国服物价：\n{sn_price}'
 
+
+# async def check_tq(item_id):
+#     tq_api_url = 'https://www.ceve-market.org/tqapi/market/region/10000002/system/30000142/type/'+str(item_id)+'.json'
+#     logger.info("check api "+ tq_api_url)
+#     tq_price = await data_process(tq_api_url)
+#     return f'\n----------\n欧服物价：\n{tq_price}'
+
+
+async def check_1v(item_id):
+    return
 
 async def get_price(item_id) -> str:
-    api_data = await check(item_id)
+    api_data = await check_sn(item_id)
     return api_data
+
+async def get_local_price(item_id) -> str:
+    result = await MarketData.get_market_data(item_id)
+    logger.info(result)
+    price_list = []
+    if result:
+        for line in result:
+            price_list.append(line['price'])
+        logger.debug(price_list)
+        sell_price = "{:,.2f}".format(min(price_list))
+        return f'\n----------\n1V星城售价 {sell_price}'
+    else:
+        return f'\n----------\n1V星城售价\n未找到本地数据，请确认星城有订单或稍后再试\n当前版本可能是出错了，请联系管理员'

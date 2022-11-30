@@ -146,9 +146,19 @@ dmypy.json
 .env.prod
 
 # user resources
+keys.json
+marketdata.json
 robotData.db
 auth.json
 global.json
+accounts/
+robotData.db-shm
+robotData.db-wal
+
+# test
+test/
+conftest.py
+download.py
 
 # End of https://www.toptal.com/developers/gitignore/api/python
-robotData.db
+
