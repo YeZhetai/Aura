@@ -7,7 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10.0"
-nonebot2 = "^2.0.0-rc.1"
+nonebot2 = "^2.0.0rc2"
 pyunit-time = "^2021.2.2"
 Pillow = "^9.1.0"
 beautifulsoup4 = "^4.11.1"
@@ -23,7 +23,7 @@ nb-cli = "^0.6.0"
 nonebug = "^0.2.1"
 
 [tool.nonebot]
-plugins = ["nonebot_plugin_rauthman", "nonebot_plugin_what2eat", "nonebot_plugin_apscheduler", "nonebot_plugin_htmlrender"]
+plugins = ["nonebot_plugin_rauthman", "nonebot_plugin_what2eat", "nonebot_plugin_apscheduler"]
 plugin_dirs = ["src/plugins"]
 
 [build-system]
