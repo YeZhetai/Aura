@@ -51,8 +51,11 @@ async def receive(event: GroupMessageEvent, broadcast_data: Message = Arg(), bro
     logger.info("received broadcast is " + broadcast_name)
 
     bot = get_bot()
-    sender = event.sender.nickname
-    logger.debug(sender)
+    if (event.sender.card):
+        sender = event.sender.card
+    else:
+        sender = event.sender.nickname
+    logger.debug("sender is " + sender)
     time = datetime.datetime.now()
     message = '※※※  消息通知  ※※※\n{}\n发布者：{}\n补损码：{}\n{}\n[CQ:at,qq=all]'.format(time.strftime("%Y-%m-%d %H:%M:%S"), sender, time.strftime("%Y%m%d%H%M%S"), broadcast_name) 
     
